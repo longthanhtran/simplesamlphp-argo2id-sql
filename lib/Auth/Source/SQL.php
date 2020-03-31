@@ -17,10 +17,17 @@ class SQL extends UserPassBase {
     public function __construct($info, $config) {
         assert(is_array($info));
         assert(is_array($config));
+        $this->phpVersionCheck();
 
         parent::__construct($info, $config);
         verifyParams($config);
         buildProperties($config);
+    }
+
+    private function phpVersionCheck() {
+        if(!version_compare(PHP_VERSION, '7.3.0') >= 0) {
+            throw new Exception('Require at least PHP 7.3.0 for Argon2id');
+        }
     }
 
     private function buildProperties($config) {
